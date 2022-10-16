@@ -169,7 +169,7 @@ void obj_update_pos_from_parent_transformation(Mat4 a0, struct Object *a1) {
 }
 
 
-void create_transformation_from_matrices(Mat4 a0, Mat4 a1, Mat4 a2) {
+/*void create_transformation_from_matrices(Mat4 a0, Mat4 a1, Mat4 a2) {
     f32 spC, sp8, sp4;
 
     spC = a2[3][0] * a2[0][0] + a2[3][1] * a2[0][1] + a2[3][2] * a2[0][2];
@@ -196,6 +196,25 @@ void create_transformation_from_matrices(Mat4 a0, Mat4 a1, Mat4 a2) {
     a0[1][3] = 0;
     a0[2][3] = 0;
     a0[3][3] = 1.0f;
+}*/
+
+void create_transformation_from_matrices(Mat4 a0, Mat4 a1, Mat4 a2) {
+Vec3f medium;
+s32 j,i;
+for(j=0; j<3;j++){
+    medium[j]=a2[3][0]*a2[j][0]+a2[3][1]*a2[j][1]+a2[3][2]*a2[j][2];
+    a0[j][3]=0;
+}
+
+for(j=0; j<4;j++){
+for(i=0; i<3;i++){
+a[j][i]=a1[j][0] * a2[i][0] + a1[j][i] * a2[i][1] + a1[j][2]  * a2[i][2];
+}
+}
+a0[3][0]-= medium[0];
+a0[3][1]-= medium[1];
+a0[3][2]-= medium[2];
+*((u32 *) &a0[3][3]) = 0X3F800000;
 }
 
 void obj_set_held_state(struct Object *obj, const BehaviorScript *heldBehavior) {

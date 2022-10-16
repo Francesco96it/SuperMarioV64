@@ -105,6 +105,7 @@ s16 sCreditsPlayer2Yaw;
  */
 u8 sFramesPaused;
 
+
 extern struct CameraFOVStatus sFOVState;
 extern struct TransitionInfo sModeTransition;
 extern struct PlayerGeometry sMarioGeometry;
@@ -532,6 +533,7 @@ void set_camera_shake_from_hit(s16 shake) {
 /**
  * Start a shake from the environment
  */
+/*
 void set_environmental_camera_shake(s16 shake) {
     switch (shake) {
         case SHAKE_ENV_EXPLOSION:
@@ -571,7 +573,25 @@ void set_environmental_camera_shake(s16 shake) {
             set_camera_yaw_shake(-0x200, 0x80, 0x200);
             break;
     }
+}*/
+
+
+
+s32 shakeValues[6][3]={
+    {0x60, 0x8, 0x4000},
+    {0xC0, 0x8, 0x4000},
+    {0x100, 0x8, 0x3000},
+    {0x40, 0x8, 0x8000},
+    {0x40, 0x2, 0x8000}
+};
+
+void set_environmental_camera_shake(s32 shake) {
+    set_camera_pitch_shake(shakeValues[shake][0],shakeValues[shake][1],shakeValues[shake][2]);
+    if(shake==SHAKE_ENV_JRB_SHIP_DRAIN){
+       set_camera_roll_shake(0x400, 0x10, 0x100);
+    }
 }
+
 
 /**
  * Starts a camera shake, but scales the amplitude by the point's distance from the camera
